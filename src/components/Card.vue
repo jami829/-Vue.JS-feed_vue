@@ -1,15 +1,24 @@
 <template>
   <div class="card">
     <div class="card_container">
-      <div class="content_detail">카테고리 이름: 문템, 콘텐츠 아이디:문템</div>
+      <div class="content_detail">
+        <span>{{
+          feed.category_id === 1
+            ? "apple"
+            : feed.category_id === 2
+            ? "banana"
+            : "coconut"
+        }}</span>
+        <span>{{ feed.id }}</span>
+      </div>
       <div class="division_line"></div>
       <div class="card_detail">
-        <span>유저아이디:문템</span>
+        <span>{{ feed.user_id }}</span>
         <span> | </span>
-        <span>생성일:문템</span>
+        <span>{{ feed.created_at }}</span>
       </div>
-      <div class="card_title">타이틀:문템 ... 추가</div>
-      <div class="summary">요약:문템 ... 추가</div>
+      <div class="card_title">{{ feed.title }}</div>
+      <div class="summary">{{ feed.contents }}</div>
     </div>
   </div>
 </template>
@@ -17,6 +26,10 @@
 <script>
 export default {
   name: "Card",
+  props: ["feed"],
+  mounted: function () {
+    console.log("feed", this.feed);
+  },
 };
 </script>
 

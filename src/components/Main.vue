@@ -1,8 +1,8 @@
 <template>
   <div id="main">
-    <div id="login_btn" @click="setData">로그인</div>
-    <div>
-      <Card />
+    <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
+    <div v-for="feed in feedArr" :key="feed.id">
+      <Card :feed="feed" />
     </div>
   </div>
 </template>
@@ -17,6 +17,8 @@ export default {
   },
   data() {
     return {
+      feedArr: [],
+      categoryArr: [],
       options: {
         params: {
           page: 1,
@@ -32,9 +34,20 @@ export default {
       this.$axios
         .get("https://problem.comento.kr/api/list", this.options)
         .then((response) => {
-          console.log("뭘받아옴?", response.data);
+          this.feedArr = [...response.data.data];
         });
     },
+    setCategory() {
+      this.$axios
+        .get("https://problem.comento.kr/api/category")
+        .then((response) => {
+          this.categoryArr = [...response.data.category];
+        });
+    },
+  },
+  updated: function () {
+    console.log("feedArrt", this.feedArr);
+    console.log("categoryArr", this.categoryArr);
   },
 };
 </script>
