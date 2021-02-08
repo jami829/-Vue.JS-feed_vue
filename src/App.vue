@@ -28,7 +28,7 @@ export default {
         behavior: "smooth",
       });
     },
-    // 최상단 이동 버튼
+    // 최상단 이동 버튼: 스크롤을 내리면 버튼이 보이게 함.
     topBtn() {
       const scrollTop = document.documentElement.scrollTop;
       if (scrollTop > 100) {
