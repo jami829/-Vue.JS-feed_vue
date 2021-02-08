@@ -1,5 +1,12 @@
 <template>
   <div id="main">
+    <Modal
+      :isModalOpen="isModalOpen"
+      :openFilter="openFilter"
+      v-if="isModalOpen"
+    />
+    <Nav />
+    <div id="filter_btn" @click="openFilter">필터</div>
     <div id="login_btn">로그인</div>
     <div id="container_main">
       <div v-for="(feed, idx) in feedArr" :key="feed.id">
@@ -18,32 +25,38 @@
 </template>
 
 <script>
+import Modal from "./Modal";
+import Nav from "./Nav";
 import Card from "./Card";
 import Ads from "./Ads";
 
 export default {
   name: "Main",
   components: {
+    Modal,
+    Nav,
     Card,
     Ads,
   },
   data() {
     return {
+      isModalOpen: false,
       feedArr: [],
       adsArr: [],
       data: [],
-      categoryArr: [],
+      filter: this.$store.state.isChecked,
       options: {
         params: {
           page: 1,
           ord: "asc",
           limit: 10,
-          category: [1, 2, 3],
+          category: [],
         },
       },
       loading: false,
     };
   },
+
   methods: {
     // 무한 스크롤 피드 받아오기: API로부터 받아온 페이지 데이터를 이용해 다음 데이터 로드
     getFeeds() {
@@ -84,15 +97,31 @@ export default {
         await this.getFeeds();
       }
     },
+    openFilter() {
+      this.isModalOpen = !this.isModalOpen;
+    },
+    // 필터체크로 인해 새로 저장된 값을 store에서 가져오고, 그 값을 data()에 넣어준다.
+    // 그 값으로 feed 리스트들을 axios요청하게 한다.
+    // 필터되어 수정된 값으로 요청해야하므로 불변성 유지 할 필요 x
+    async setFilter() {
+      this.$store.state.isChecked.forEach((item) => {
+        if (item.checked) {
+          this.options.params.category.push(item.id);
+        }
+      });
+
+      await this.getFeeds();
+    },
   },
   // 스크롤 전 리스트
   created: async function () {
+    this.setFilter();
     await this.getAdsList();
     await this.getFeeds();
   },
+  mounted: function () {},
   updated: function () {
-    // console.log("feedArrt", this.feedArr);
-    // console.log("categoryArr", this.categoryArr);
+    console.log("zkspxkzp", this.options.params.category);
     // scroll event listner 등록
     window.addEventListener("scroll", this.handleScroll);
   },

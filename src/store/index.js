@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+// import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {  // data
     isChecked: [
       { id: 1, checked: true },
-      { id: 2, checked: false },
+      { id: 2, checked: true },
       { id: 3, checked: true }
     ]
   },
@@ -21,5 +21,9 @@ export default new Vuex.Store({
   actions: {
 
   },
-  plugins: [createPersistedState()]
+
+
+  // plugins: [createPersistedState()]
+
+
 })
