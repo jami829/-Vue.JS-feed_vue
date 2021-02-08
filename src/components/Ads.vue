@@ -4,16 +4,24 @@
     <div class="photo">
       <span>sponsored</span>
     </div>
-    <div class="contents_ads"></div>
+    <div class="contents_ads">
+      <!-- {{ advertising.id }} -->
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Ads",
-  props: ["contents"],
-  created: function () {
-    console.log("ads", this.contents);
+  props: ["ads"],
+  data() {
+    return {
+      adsArr: this.ads,
+    };
+  },
+
+  mounted: function () {
+    console.log("ads", this.ads);
   },
 };
 </script>

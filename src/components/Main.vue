@@ -2,10 +2,15 @@
   <div id="main">
     <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
     <div v-for="(feed, idx) in feedArr" :key="feed.id">
-      <!-- 3번째 인덱스마다 "Ads"컴포넌트를 보이게 한다. -->
-      <Card :feed="feed" v-if="(idx + 1) % 4 !== 0" />
-      <Ads :contents="addArr" v-if="(idx + 1) % 4 === 0" />
+      <Card :feed="feed" />
+      <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
+           따라서 어느 광고를 게시할지 특정이 되지 않아 받아온 광고를 배열에 저장 후 랜덤으로 게시하게 설정 -->
+      <Ads
+        :ads="adsArr[Math.floor(Math.random() * adsArr.length)]"
+        v-if="(idx + 1) % 3 === 0"
+      />
     </div>
+
     <div v-if="loading">로딩 중...</div>
   </div>
 </template>
@@ -23,8 +28,9 @@ export default {
   data() {
     return {
       feedArr: [],
+      adsArr: [],
+      data: [],
       categoryArr: [],
-      addArr: [],
       options: {
         params: {
           page: 1,
@@ -65,13 +71,13 @@ export default {
       this.$axios
         .get("https://problem.comento.kr/api/ads", this.options)
         .then((response) => {
-          this.addArr = [...this.addArr, ...response.data.data];
-          console.log("광고", this.addArr);
+          this.adsArr = [...this.adsArr, ...response.data.data];
+          console.log("광고", this.adsArr);
         });
     },
 
     // 무한 스트롤 이벤트 핸들러
-    handleScroll() {
+    async handleScroll() {
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
@@ -80,15 +86,15 @@ export default {
         this.options.params.page = this.options.params.page + 1; // 기존 state의 page 값을 변경시킨 후 axios로 다음 페이지 feeds를 불러오게 한다.
         // console.log("변경된 페이지", this.options.params.page);
         // 페이지 끝에 도달하면 추가 데이터를 받아온다.
-        this.getFeeds();
-        this.getAdsList();
+        await this.getAdsList();
+        await this.getFeeds();
       }
     },
   },
   // 스크롤 전 리스트
-  created: function () {
-    this.getFeeds();
-    this.getAdsList();
+  created: async function () {
+    await this.getAdsList();
+    await this.getFeeds();
   },
   updated: function () {
     // console.log("feedArrt", this.feedArr);

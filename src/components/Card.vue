@@ -37,7 +37,7 @@ export default {
       contents: {},
     };
   },
-  mounted: function () {
+  created: function () {
     console.log("feed", this.feed);
   },
   methods: {
