@@ -1,17 +1,19 @@
 <template>
   <div id="main">
-    <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
-    <div v-for="(feed, idx) in feedArr" :key="feed.id">
-      <Card :feed="feed" />
-      <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
+    <div id="login_btn">로그인</div>
+    <div id="container_main">
+      <div v-for="(feed, idx) in feedArr" :key="feed.id">
+        <Card :feed="feed" />
+        <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
            따라서 어느 광고를 게시할지 특정이 되지 않아 받아온 광고를 배열에 저장 후 랜덤으로 게시하게 설정 -->
-      <Ads
-        :ads="adsArr[Math.floor(Math.random() * adsArr.length)]"
-        v-if="(idx + 1) % 3 === 0"
-      />
-    </div>
+        <Ads
+          :ads="adsArr[Math.floor(Math.random() * adsArr.length)]"
+          v-if="(idx + 1) % 3 === 0"
+        />
+      </div>
 
-    <div v-if="loading">로딩 중...</div>
+      <div v-if="loading">로딩 중...</div>
+    </div>
   </div>
 </template>
 
@@ -43,14 +45,6 @@ export default {
     };
   },
   methods: {
-    setCategory() {
-      this.$axios
-        .get("https://problem.comento.kr/api/category")
-        .then((response) => {
-          this.categoryArr = [...response.data.category];
-        });
-    },
-
     // 무한 스크롤 피드 받아오기: API로부터 받아온 페이지 데이터를 이용해 다음 데이터 로드
     getFeeds() {
       // 데이터를 받아오는 동안 로딩바 렌더

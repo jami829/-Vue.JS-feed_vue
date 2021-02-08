@@ -1,18 +1,31 @@
 <template>
   <div id="app">
     <div id="scrollToTop" @click="scrollToTop">TOP</div>
+    <Modal
+      :isModalOpen="isModalOpen"
+      :openFilter="openFilter"
+      v-if="isModalOpen"
+    />
     <Nav />
+    <div id="filter_btn" @click="openFilter">필터</div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Modal from "./components/Modal";
 import Nav from "./components/Nav";
 
 export default {
   name: "App",
   components: {
+    Modal,
     Nav,
+  },
+  data() {
+    return {
+      isModalOpen: false,
+    };
   },
   methods: {
     // 최상단 이동 기능
@@ -32,11 +45,18 @@ export default {
         document.querySelector("#scrollToTop").style.display = "none";
       }
     },
+
+    openFilter() {
+      this.isModalOpen = !this.isModalOpen;
+    },
   },
 
   mounted: function () {
     this.topBtn();
     window.addEventListener("scroll", this.topBtn);
+  },
+  updated: function () {
+    console.log("필터 모달 상태", this.isModalOpen);
   },
 };
 </script>
