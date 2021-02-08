@@ -1,6 +1,5 @@
 <template>
   <div id="main">
-    <Nav />
     <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
     <div v-for="feed in feedArr" :key="feed.id">
       <Card :feed="feed" />
@@ -10,13 +9,11 @@
 </template>
 
 <script>
-import Nav from "./Nav";
 import Card from "./Card";
 
 export default {
   name: "Main",
   components: {
-    Nav,
     Card,
   },
   data() {

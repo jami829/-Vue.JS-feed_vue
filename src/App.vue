@@ -1,13 +1,19 @@
 <template>
   <div id="app">
     <div id="scrollToTop" @click="scrollToTop">TOP</div>
+    <Nav />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Nav from "./components/Nav";
+
 export default {
   name: "App",
+  components: {
+    Nav,
+  },
   methods: {
     // 최상단 이동 기능
     scrollToTop() {
