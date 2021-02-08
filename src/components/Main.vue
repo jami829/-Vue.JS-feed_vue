@@ -1,9 +1,11 @@
 <template>
   <div id="main">
     <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
-    <div v-for="feed in feedArr" :key="feed.id">
+    <div v-for="(feed, idx) in feedArr" :key="feed.id">
+      <!-- 3번째 인덱스마다 태그를 보이게 한다. -->
+      <Ads :page="options.params.page" v-if="(idx + 1) % 4 === 0" />
       <Card :feed="feed" />
-      <Ads :page="options.params.page" />
+      {{ idx }}
     </div>
     <div v-if="loading">로딩 중...</div>
   </div>
@@ -23,6 +25,7 @@ export default {
     return {
       feedArr: [],
       categoryArr: [],
+      addArr: [],
       options: {
         params: {
           page: 1,
@@ -35,13 +38,6 @@ export default {
     };
   },
   methods: {
-    setData() {
-      this.$axios
-        .get("https://problem.comento.kr/api/list", this.options)
-        .then((response) => {
-          this.feedArr = [...response.data.data];
-        });
-    },
     setCategory() {
       this.$axios
         .get("https://problem.comento.kr/api/category")
@@ -51,7 +47,7 @@ export default {
     },
 
     // 무한 스크롤 피드 받아오기: API로부터 받아온 페이지 데이터를 이용해 다음 데이터 로드
-    fetchMoreFeeds() {
+    getFeeds() {
       // 데이터를 받아오는 동안 로딩바 렌더
       this.loading = true;
       this.$axios
@@ -66,6 +62,15 @@ export default {
       this.loading = false;
     },
 
+    getAdsList() {
+      this.$axios
+        .get("https://problem.comento.kr/api/ads", this.options)
+        .then((response) => {
+          this.addArr = [...this.addArr, ...response.data.data];
+          console.log("광고", this.addArr);
+        });
+    },
+
     // 무한 스트롤 이벤트 핸들러
     handleScroll() {
       const scrollHeight = document.documentElement.scrollHeight;
@@ -76,12 +81,15 @@ export default {
         this.options.params.page = this.options.params.page + 1; // 기존 state의 page 값을 변경시킨 후 axios로 다음 페이지 feeds를 불러오게 한다.
         // console.log("변경된 페이지", this.options.params.page);
         // 페이지 끝에 도달하면 추가 데이터를 받아온다.
-        this.fetchMoreFeeds();
+        this.getFeeds();
+        this.getAdsList();
       }
     },
   },
+  // 스크롤 전 리스트
   created: function () {
-    this.setData();
+    this.getFeeds();
+    this.getAdsList();
   },
   updated: function () {
     // console.log("feedArrt", this.feedArr);
