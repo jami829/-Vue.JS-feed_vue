@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import router from './router'
-import store from './store' // 모든 컴포넌트의 중앙통제소격인 main.js에 vuex 저장소를 설정해놔야 한다. 각 컴포넌트에 import할 필요 없음.
+import store from './store/index' // 모든 컴포넌트의 중앙통제소격인 main.js에 vuex 저장소를 설정해놔야 한다. 각 컴포넌트에 import할 필요 없음.
 
 //! main.js안에 적용 및 삽입되어있는것은 각 컴포넌트에서 $를 사용해 불러올 수 있다.  
 

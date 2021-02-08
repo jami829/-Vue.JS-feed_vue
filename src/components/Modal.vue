@@ -5,11 +5,11 @@
       <h2>필터</h2>
       <div>
         <div v-for="item in categoryArr" :key="item.id">
-          <input type="checkbox" checked="isChecked" />
+          <input type="checkbox" v-model="isChecked[item.id - 1].checked" />
           <span>{{ item.name }}</span>
         </div>
       </div>
-      <button>저장하기</button>
+      <button @click="saveChecked">저장하기</button>
     </div>
   </div>
 </template>
@@ -22,12 +22,17 @@ export default {
     return {
       categoryArr: [],
       modalOpen: this.isModalOpen,
-      isChecked: true,
+      isChecked: this.$store.state.isChecked,
     };
   },
   methods: {
     handleModalOpen() {
       this.openFilter();
+    },
+    // 체크박스 클릭할 때마다 불린 값 변동, 변동된 값을 바로 store에 영향주기 & 모달 끄기
+    saveChecked() {
+      this.$store.commit("saveChecked", this.isChecked);
+      this.handleModalOpen();
     },
 
     getCategory() {
@@ -42,6 +47,9 @@ export default {
   created: function () {
     this.getCategory();
     console.log("ismodal?", this.modalOpen);
+  },
+  mounted: function () {
+    console.log("체크된거 스토어", this.$store.state.isChecked);
   },
 };
 </script>
