@@ -1,22 +1,13 @@
 <template>
   <div id="app">
     <div id="scrollToTop" @click="scrollToTop">TOP</div>
-    <Nav />
-    <Main />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Nav from "./components/Nav.vue";
-import Main from "./components/Main.vue";
-
 export default {
   name: "App",
-  components: {
-    Nav,
-    Main,
-  },
-
   methods: {
     // 최상단 이동 기능
     scrollToTop() {

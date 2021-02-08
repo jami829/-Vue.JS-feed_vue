@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="goToDetails">
     <div class="card_container">
       <div class="content_detail">
         <span>{{
@@ -29,6 +29,11 @@ export default {
   props: ["feed"],
   mounted: function () {
     console.log("feed", this.feed);
+  },
+  methods: {
+    goToDetails() {
+      this.$router.push({ name: "details" });
+    },
   },
 };
 </script>
