@@ -27,12 +27,27 @@
 export default {
   name: "Card",
   props: ["feed"],
+  data() {
+    return {
+      options: {
+        params: {
+          id: this.feed.id,
+        },
+      },
+      contents: {},
+    };
+  },
   mounted: function () {
     console.log("feed", this.feed);
   },
   methods: {
     goToDetails() {
-      this.$router.push({ name: "details" });
+      this.$router.push({
+        name: "details",
+        params: {
+          id: this.feed.id,
+        },
+      });
     },
   },
 };
