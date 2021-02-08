@@ -3,6 +3,7 @@
     <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
     <div v-for="feed in feedArr" :key="feed.id">
       <Card :feed="feed" />
+      <Ads :page="options.params.page" />
     </div>
     <div v-if="loading">로딩 중...</div>
   </div>
@@ -10,11 +11,13 @@
 
 <script>
 import Card from "./Card";
+import Ads from "./Ads";
 
 export default {
   name: "Main",
   components: {
     Card,
+    Ads,
   },
   data() {
     return {
@@ -87,9 +90,9 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
   },
   // scroll event listner 해제
-  // destroyed: function () {
-  //   window.removeEventListener("scroll", this.handleScroll);
-  // },
+  destroyed: function () {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
 };
 </script>
 
