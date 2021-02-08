@@ -1,12 +1,16 @@
 <template>
   <div class="ads">
-    <h1>광고</h1>
-    <div class="photo">
+    <div class="container_ads">
       <span>sponsored</span>
+      <div class="photo">
+        <img :src="`https://cdn.comento.kr/assignment/${ads.img}`" />
+      </div>
+      <div class="cotents_box_ads">
+        <div class="title_ads">{{ ads.title }}</div>
+        <div class="contents_ads">{{ ads.contents }}</div>
+      </div>
     </div>
-    <div class="contents_ads">
-      <!-- {{ advertising.id }} -->
-    </div>
+    <div class="contents_ads"></div>
   </div>
 </template>
 
@@ -26,3 +30,9 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.ads {
+  margin: 20px 10px;
+  border: 1px solid gray;
+}
+</style>
