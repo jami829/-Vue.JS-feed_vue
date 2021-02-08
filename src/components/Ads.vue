@@ -1,6 +1,5 @@
 <template>
   <div class="ads">
-    <h1>현재 페이지 {{ page }}</h1>
     <h1>광고</h1>
     <div class="photo">
       <span>sponsored</span>
@@ -12,7 +11,10 @@
 <script>
 export default {
   name: "Ads",
-  props: ["page"],
+  props: ["contents"],
+  created: function () {
+    console.log("ads", this.contents);
+  },
 };
 </script>
 

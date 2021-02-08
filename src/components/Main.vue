@@ -2,10 +2,9 @@
   <div id="main">
     <div id="login_btn" @click="[setData(), setCategory()]">로그인</div>
     <div v-for="(feed, idx) in feedArr" :key="feed.id">
-      <!-- 3번째 인덱스마다 태그를 보이게 한다. -->
-      <Ads :page="options.params.page" v-if="(idx + 1) % 4 === 0" />
-      <Card :feed="feed" />
-      {{ idx }}
+      <!-- 3번째 인덱스마다 "Ads"컴포넌트를 보이게 한다. -->
+      <Card :feed="feed" v-if="(idx + 1) % 4 !== 0" />
+      <Ads :contents="addArr" v-if="(idx + 1) % 4 === 0" />
     </div>
     <div v-if="loading">로딩 중...</div>
   </div>
