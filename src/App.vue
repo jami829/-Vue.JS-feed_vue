@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <div id="scrollToTop" @click="scrollToTop">TOP</div>
-    <div>
-      <Nav />
-      <Main />
-    </div>
+    <Nav />
+    <Main />
   </div>
 </template>
 
@@ -32,9 +30,9 @@ export default {
     topBtn() {
       const scrollTop = document.documentElement.scrollTop;
       if (scrollTop > 100) {
-        document.querySelector("#scrollToTop").style.visibility = "visible";
+        document.querySelector("#scrollToTop").style.display = "flex";
       } else {
-        document.querySelector("#scrollToTop").style.visibility = "hidden";
+        document.querySelector("#scrollToTop").style.display = "none";
       }
     },
   },
@@ -45,6 +43,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 #app {
   position: relative;
