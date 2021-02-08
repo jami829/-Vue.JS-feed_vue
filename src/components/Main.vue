@@ -4,6 +4,7 @@
     <div v-for="feed in feedArr" :key="feed.id">
       <Card :feed="feed" />
     </div>
+    <div v-if="loading">로딩 중...</div>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ export default {
           category: [1, 2, 3],
         },
       },
+      loading: false,
     };
   },
   methods: {
@@ -47,6 +49,8 @@ export default {
 
     // 무한 스크롤 피드 받아오기: API로부터 받아온 페이지 데이터를 이용해 다음 데이터 로드
     fetchMoreFeeds() {
+      // 데이터를 받아오는 동안 로딩바 렌더
+      this.loading = true;
       this.$axios
         .get("https://problem.comento.kr/api/list", this.options)
         .then((response) => {
@@ -55,6 +59,8 @@ export default {
           this.feedArr = [...this.feedArr, ...response.data.data];
           console.log("new Feeds", this.feedArr);
         });
+      // 데이터를 받아오면 로딩바 해제
+      this.loading = false;
     },
 
     // 무한 스트롤 이벤트 핸들러
