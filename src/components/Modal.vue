@@ -65,6 +65,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 400;
 
   #overlay {
     background: rgba(0, 0, 0, 0.7);
