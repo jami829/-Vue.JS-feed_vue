@@ -12,24 +12,28 @@
         <span>로그인</span>
       </div>
       <div id="contents_box_main">
-        <span>
-          <span v-if="options.params.ord === 'asc'" class="order_icon_active"
-            >O</span
-          >
-          <span v-else class="order_icon"></span>
-          <span @click="handleAsc">오름차순</span>
-        </span>
-        <span>
-          <span v-if="options.params.ord === 'desc'" class="order_icon_active"
-            >O</span
-          >
-          <span v-else class="order_icon"></span>
-          <!-- <span>내림차순</span> -->
-          <span @click="handleDesc">내림차순</span>
-        </span>
-
-        <div id="filter_btn" @click="openFilter">필터</div>
-
+        <div id="filter_box">
+          <span id="sort">
+            <span>
+              <span
+                v-if="options.params.ord === 'asc'"
+                class="order_icon_active"
+              >
+              </span>
+              <span v-else class="order_icon"></span>
+              <span @click="handleAsc">오름차순</span>
+            </span>
+            <span>
+              <span
+                v-if="options.params.ord === 'desc'"
+                class="order_icon_active"
+              ></span>
+              <span v-else class="order_icon"></span>
+              <span @click="handleDesc">내림차순</span>
+            </span>
+          </span>
+          <span id="filter_btn" @click="openFilter">필터</span>
+        </div>
         <div id="container_main">
           <div v-for="(feed, idx) in feedArr" :key="idx">
             <Card :feed="feed" />
@@ -198,6 +202,43 @@ export default {
   #contents_box_main {
     // display: flex;
     padding: 40px;
+
+    .order_icon_active {
+      width: 10px;
+      height: 10px;
+      background: black;
+    }
+    .order_icon {
+      width: 13px;
+      height: 10px;
+      background: black;
+    }
+    #filter_box {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+
+      #sort {
+        span {
+          font-size: 13px;
+          margin-left: 4px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+      #filter_btn {
+        border: 1px solid #e1e4e7;
+        border-radius: 3px;
+        color: #e1e4e7;
+        padding: 5px 14px 3px 12px;
+        font-size: 13px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 </style>
+

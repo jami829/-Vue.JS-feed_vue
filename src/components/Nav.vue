@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <div id="contents">'[제출일] 이름'을 작성해주세요 :)</div>
+    <div id="contents">[2021.2.9] 이재훈</div>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
 
   #contents {
     font-size: 16px;
-    margin-left: 190px;
+    padding-left: 45px;
   }
 }
 </style>
