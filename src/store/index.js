@@ -29,7 +29,7 @@ export default new Vuex.Store({
   },
   getters: {
     descFeeds: state => {
-      return state.orderedDesc.slice().reverse()
+      return state.feedArr.slice().reverse()
     }
   },
   actions: {
