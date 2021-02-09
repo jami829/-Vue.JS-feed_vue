@@ -90,6 +90,7 @@ export default {
       this.$axios
         .get("https://problem.comento.kr/api/list", this.options)
         .then((response) => {
+          console.log("뭘받아와 겟피드", response.data.data);
           // 기존 state 값의 불변성 유지를 위해 새로운 배열에 spread를 사용해 새로운 배열에 구현
           // this.feedArr = [...this.feedArr, ...response.data.data];
           this.$store.commit("feeds", response.data.data);
@@ -160,8 +161,8 @@ export default {
   created: async function () {
     this.getFilterValue();
     await this.getAdsList();
-    await this.getFeeds();
-    this.feedArr = this.$store.state.feedArr;
+    // await this.getFeeds();
+    // this.feedArr = this.$store.state.feedArr;
   },
   mounted: function () {},
   updated: function () {
