@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+
 export default new Vuex.Store({
   state: {  // data
     isChecked: [
@@ -11,15 +12,19 @@ export default new Vuex.Store({
       { id: 2, checked: true },
       { id: 3, checked: true }
     ],
-    orderedDesc: []
+    feedArr: []
   },
 
   mutations: {
     saveChecked: function (state, payload) {
       state.isChecked = payload
     },
-    reverseFeeds: function (state, payload) {
-      state.orderedDesc = payload
+    feeds: function (state, payload) {
+      state.feedArr = [...state.feedArr, ...payload]
+    },
+    ressetFeeds: function (state) {
+      state.feedArr = []
+
     }
   },
   getters: {

@@ -90,12 +90,12 @@ export default {
       this.$axios
         .get("https://problem.comento.kr/api/list", this.options)
         .then((response) => {
-          console.log("next page", response.data.data);
           // 기존 state 값의 불변성 유지를 위해 새로운 배열에 spread를 사용해 새로운 배열에 구현
-          this.feedArr = [...this.feedArr, ...response.data.data];
-          this.$store.commit("reverseFeeds", this.feedArr);
+          // this.feedArr = [...this.feedArr, ...response.data.data];
+          this.$store.commit("feeds", response.data.data);
+          this.feedArr = this.$store.state.feedArr;
           console.log("new Feeds", this.feedArr);
-          console.log("store feeds", this.$store.state.orderedDesc);
+          console.log("store feeds", this.$store.state.feedArr);
         });
       // 데이터를 받아오면 로딩바 해제
       this.loading = false;
@@ -139,7 +139,8 @@ export default {
     // 그 값으로 feed 리스트들을 axios요청하게 한다.
     // Modal 컴포넌트에서 저장버튼 눌렀을 시 작동.
     getFilterValue() {
-      this.feedArr = [];
+      // this.feedArr = [];
+      this.$store.commit("ressetFeeds");
       this.options.params.category = [];
       this.$store.state.isChecked.forEach((item) => {
         if (item.checked) {
@@ -160,6 +161,7 @@ export default {
     this.getFilterValue();
     await this.getAdsList();
     await this.getFeeds();
+    this.feedArr = this.$store.state.feedArr;
   },
   mounted: function () {},
   updated: function () {
@@ -170,7 +172,7 @@ export default {
     if (this.options.params.ord === "desc") {
       this.feedArr = this.descFeeds;
     } else {
-      this.feedArr = this.$store.state.orderedDesc;
+      this.feedArr = this.$store.state.feedArr;
     }
   },
   // scroll event listner 해제
