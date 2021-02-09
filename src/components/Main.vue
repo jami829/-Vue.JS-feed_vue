@@ -4,7 +4,7 @@
       :isModalOpen="isModalOpen"
       :openFilter="openFilter"
       :getFilterValue="getFilterValue"
-      @closeModal="openFilter"
+      @close-modal="openFilter"
       @checked="getFilterValue"
       v-if="isModalOpen"
     />
@@ -12,7 +12,7 @@
     <div id="filter_btn" @click="openFilter">필터</div>
     <div id="login_btn">로그인</div>
     <div id="container_main">
-      <div v-for="(feed, idx) in feedArr" :key="feed.id">
+      <div v-for="(feed, idx) in feedArr" :key="idx">
         <Card :feed="feed" />
         <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
            따라서 어느 광고를 게시할지 특정이 되지 않아 받아온 광고를 배열에 저장 후 랜덤으로 게시하게 설정 -->

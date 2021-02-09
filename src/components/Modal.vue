@@ -4,7 +4,7 @@
     <div id="contents_filter">
       <h2>필터</h2>
       <div>
-        <div v-for="item in categoryArr" :key="item.id">
+        <div v-for="(item, idx) in categoryArr" :key="idx">
           <input type="checkbox" v-model="isChecked[item.id - 1].checked" />
           <span>{{ item.name }}</span>
         </div>
