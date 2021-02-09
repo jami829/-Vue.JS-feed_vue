@@ -1,24 +1,4 @@
-# test
+[ 참고 사항 ]
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+완성하지 못한 부분을 이어서 개발한
+나머지 완성본은 아래 깃헙 주소에 있습니다
