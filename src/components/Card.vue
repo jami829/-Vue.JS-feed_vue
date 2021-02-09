@@ -15,7 +15,7 @@
       <div class="card_detail">
         <span>{{ feed.user_id }}</span>
         <span> | </span>
-        <span>{{ feed.created_at }}</span>
+        <span>{{ feed.created_at.substring(0, 10) }}</span>
       </div>
       <!-- 카드 타이틀 줄기, 펼치기, 접기 -->
       <div
