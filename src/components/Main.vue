@@ -9,6 +9,23 @@
       v-if="isModalOpen"
     />
     <Nav />
+    <div>
+      <span>
+        <span v-if="options.params.ord === 'asc'" class="order_icon_active"
+          >O</span
+        >
+        <span v-else class="order_icon"></span>
+        <span @click="handleAsc">오름차순</span>
+      </span>
+      <span>
+        <span v-if="options.params.ord === 'desc'" class="order_icon_active"
+          >O</span
+        >
+        <span v-else class="order_icon"></span>
+        <!-- <span>내림차순</span> -->
+        <span @click="handleDesc">내림차순</span>
+      </span>
+    </div>
     <div id="filter_btn" @click="openFilter">필터</div>
     <div id="login_btn">로그인</div>
     <div id="container_main">
@@ -58,7 +75,13 @@ export default {
       loading: false,
     };
   },
-
+  // 오름차순, 내림차순 정렬: updataed에서 실행
+  // axios로 받아온 feed를 store에 저장한 후 store에서 getter로 역순한 배열을 구해놓고 여기에 computed실행해놓는다.
+  computed: {
+    descFeeds() {
+      return this.$store.getters.descFeeds;
+    },
+  },
   methods: {
     // 무한 스크롤 피드 받아오기: API로부터 받아온 페이지 데이터를 이용해 다음 데이터 로드
     getFeeds() {
@@ -70,7 +93,9 @@ export default {
           console.log("next page", response.data.data);
           // 기존 state 값의 불변성 유지를 위해 새로운 배열에 spread를 사용해 새로운 배열에 구현
           this.feedArr = [...this.feedArr, ...response.data.data];
+          this.$store.commit("reverseFeeds", this.feedArr);
           console.log("new Feeds", this.feedArr);
+          console.log("store feeds", this.$store.state.orderedDesc);
         });
       // 데이터를 받아오면 로딩바 해제
       this.loading = false;
@@ -99,19 +124,29 @@ export default {
         await this.getFeeds();
       }
     },
+    // 오름차순, 내림차순 정렬: updataed에서 실행
+    handleAsc() {
+      this.options.params.ord = "asc";
+    },
+    handleDesc() {
+      this.options.params.ord = "desc";
+    },
     openFilter() {
       this.isModalOpen = !this.isModalOpen;
     },
+    // 기존 상태값을 초기화 한 후,
     // 필터체크로 인해 새로 저장된 값을 store에서 가져오고, 그 값을 상태값인 category 배열에 넣어준다.
     // 그 값으로 feed 리스트들을 axios요청하게 한다.
-    // 필터되어 수정된 값으로 요청해야하므로 불변성 유지 할 필요 x
-    // created에 걸고, filter의 저장버튼에 이벤트 걸기
+    // Modal 컴포넌트에서 저장버튼 눌렀을 시 작동.
     getFilterValue() {
       this.feedArr = [];
       this.options.params.category = [];
       this.$store.state.isChecked.forEach((item) => {
         if (item.checked) {
-          this.options.params.category.push(item.id);
+          this.options.params.category = [
+            ...this.options.params.category,
+            item.id,
+          ];
         }
       });
       if (this.isModalOpen) {
@@ -131,6 +166,12 @@ export default {
     console.log("zkspxkzp", this.options.params.category);
     // scroll event listner 등록
     window.addEventListener("scroll", this.handleScroll);
+
+    if (this.options.params.ord === "desc") {
+      this.feedArr = this.descFeeds;
+    } else {
+      this.feedArr = this.$store.state.orderedDesc;
+    }
   },
   // scroll event listner 해제
   destroyed: function () {
