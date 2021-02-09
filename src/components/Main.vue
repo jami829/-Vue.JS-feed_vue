@@ -2,44 +2,48 @@
   <div id="main">
     <Modal
       :isModalOpen="isModalOpen"
-      :openFilter="openFilter"
-      :getFilterValue="getFilterValue"
       @close-modal="openFilter"
       @checked="getFilterValue"
       v-if="isModalOpen"
     />
     <Nav />
-    <div>
-      <span>
-        <span v-if="options.params.ord === 'asc'" class="order_icon_active"
-          >O</span
-        >
-        <span v-else class="order_icon"></span>
-        <span @click="handleAsc">오름차순</span>
-      </span>
-      <span>
-        <span v-if="options.params.ord === 'desc'" class="order_icon_active"
-          >O</span
-        >
-        <span v-else class="order_icon"></span>
-        <!-- <span>내림차순</span> -->
-        <span @click="handleDesc">내림차순</span>
-      </span>
-    </div>
-    <div id="filter_btn" @click="openFilter">필터</div>
-    <div id="login_btn">로그인</div>
     <div id="container_main">
-      <div v-for="(feed, idx) in feedArr" :key="idx">
-        <Card :feed="feed" />
-        <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
-           따라서 어느 광고를 게시할지 특정이 되지 않아 받아온 광고를 배열에 저장 후 랜덤으로 게시하게 설정 -->
-        <Ads
-          :ads="adsArr[Math.floor(Math.random() * adsArr.length)]"
-          v-if="(idx + 1) % 3 === 0"
-        />
+      <div id="login_btn">
+        <span>로그인</span>
       </div>
+      <div id="contents_box_main">
+        <span>
+          <span v-if="options.params.ord === 'asc'" class="order_icon_active"
+            >O</span
+          >
+          <span v-else class="order_icon"></span>
+          <span @click="handleAsc">오름차순</span>
+        </span>
+        <span>
+          <span v-if="options.params.ord === 'desc'" class="order_icon_active"
+            >O</span
+          >
+          <span v-else class="order_icon"></span>
+          <!-- <span>내림차순</span> -->
+          <span @click="handleDesc">내림차순</span>
+        </span>
 
-      <div v-if="loading">로딩 중...</div>
+        <div id="filter_btn" @click="openFilter">필터</div>
+
+        <div id="container_main">
+          <div v-for="(feed, idx) in feedArr" :key="idx">
+            <Card :feed="feed" />
+            <!-- 페이지당 받아오는 광고는 10개이지만 게시할 수 있는 광고는 페이지당 약 3개.
+           따라서 어느 광고를 게시할지 특정이 되지 않아 받아온 광고를 배열에 저장 후 랜덤으로 게시하게 설정 -->
+            <Ads
+              :ads="adsArr[Math.floor(Math.random() * adsArr.length)]"
+              v-if="(idx + 1) % 3 === 0"
+            />
+          </div>
+
+          <div v-if="loading">로딩 중...</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -183,5 +187,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+#container_main {
+  display: flex !important;
+  flex-direction: column;
+
+  #login_btn {
+    display: flex;
+  }
+  #contents_box_main {
+    // display: flex;
+    padding: 40px;
+  }
+}
 </style>

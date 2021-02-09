@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="goToDetails">
+  <div class="card">
     <div class="card_container">
       <div class="content_detail">
         <span>{{
@@ -17,8 +17,45 @@
         <span> | </span>
         <span>{{ feed.created_at }}</span>
       </div>
-      <div class="card_title">{{ feed.title }}</div>
-      <div class="summary">{{ feed.contents }}</div>
+      <!-- 카드 타이틀 줄기, 펼치기, 접기 -->
+      <div
+        class="card_title"
+        v-if="feed.title.length < 100"
+        @click="goToDetails"
+      >
+        {{ feed.title }}
+      </div>
+      <div
+        class="card_title"
+        v-else-if="feed.title.length >= 100 && !viewMore"
+        @click="goToDetails"
+      >
+        {{ feed.title.substring(0, 120) }}...
+      </div>
+      <div class="card_title" v-if="viewMore" @click="goToDetails">
+        {{ feed.title }}
+      </div>
+      <span class="view" v-if="!viewMore" @click="view">더보기</span>
+      <span class="fold" v-if="viewMore" @click="view">접기</span>
+      <!-- 카드 컨텐츠 줄기, 펼치기, 접기 -->
+      <div
+        class="summary"
+        v-if="feed.contents.length < 100"
+        @click="goToDetails"
+      >
+        {{ feed.contents }}
+      </div>
+      <div
+        class="summary"
+        v-else-if="feed.contents.length >= 100 && !viewMoreSub"
+        @click="goToDetails"
+      >
+        {{ feed.contents.substring(0, 120) }}...
+      </div>
+      <div class="summary" v-if="viewMoreSub" @click="goToDetails">
+        {{ feed.contents }}
+      </div>
+      <span class="view_sub" v-if="!viewMoreSub" @click="viewSub">더보기</span>
     </div>
   </div>
 </template>
@@ -29,6 +66,8 @@ export default {
   props: ["feed"],
   data() {
     return {
+      viewMore: false,
+      viewMoreSub: false,
       options: {
         params: {
           id: this.feed.id,
@@ -39,8 +78,15 @@ export default {
   },
   created: function () {
     console.log("feed", this.feed);
+    console.log("vu", this.viewMore);
   },
   methods: {
+    view() {
+      this.viewMore = !this.viewMore;
+    },
+    viewSub() {
+      this.viewMoreSub = !this.viewMoreSub;
+    },
     goToDetails() {
       this.$router.push({
         name: "details",
@@ -55,13 +101,83 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  border: 1px solid black;
+  border: 1px solid #e1e4e7;
+  border-radius: 5px;
+  padding: 25px 30px 21px;
+  margin-bottom: 30px;
 
   .card_container {
-    padding: 10px;
-
+    position: relative;
+    .content_detail {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #7e848a;
+    }
     .division_line {
       border: 1px solid #e1e4e7;
+    }
+    .card_detail {
+      margin-top: 17px;
+      font-size: 13px;
+      span {
+        margin-right: 12px;
+      }
+    }
+    .card_title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      color: #282c30;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .summary {
+      font-size: 16px;
+      color: #495057;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    // 타이틀
+    .view {
+      color: rgba(128, 128, 128, 0.473);
+      position: absolute;
+      top: 91px;
+      right: 0px;
+      font-size: 13px;
+      &:hover {
+        cursor: pointer;
+        color: black;
+      }
+    }
+    .fold {
+      color: rgba(128, 128, 128, 0.473);
+      position: absolute;
+      top: 160px;
+      right: 0px;
+      font-size: 13px;
+      &:hover {
+        cursor: pointer;
+        color: black;
+      }
+    }
+    // 컨텐츠
+    .view_sub {
+      color: rgba(128, 128, 128, 0.473);
+      position: absolute;
+      top: 150px;
+      right: 0px;
+      font-size: 13px;
+      &:hover {
+        cursor: pointer;
+        color: black;
+      }
     }
   }
 }
