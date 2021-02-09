@@ -1,6 +1,6 @@
 <template>
   <div id="filter">
-    <div id="overlay" @click="handleModalOpen"></div>
+    <div id="overlay" @click="handleModal"></div>
     <div id="contents_filter">
       <h2>필터</h2>
       <div>
@@ -17,7 +17,7 @@
 <script>
 export default {
   name: "Modal",
-  props: ["isModalOpen", "openFilter"],
+  props: ["isModalOpen"],
   data() {
     return {
       categoryArr: [],
@@ -26,13 +26,13 @@ export default {
     };
   },
   methods: {
-    handleModalOpen() {
-      this.openFilter();
+    handleModal() {
+      this.$emit("close-modal");
     },
     // 체크박스 클릭할 때마다 불린 값 변동, 변동된 값을 바로 store에 영향주기 & 모달 끄기
     saveChecked() {
+      this.$emit("checked");
       this.$store.commit("saveChecked", this.isChecked);
-      this.handleModalOpen();
     },
 
     getCategory() {

@@ -3,6 +3,9 @@
     <Modal
       :isModalOpen="isModalOpen"
       :openFilter="openFilter"
+      :getFilterValue="getFilterValue"
+      @closeModal="openFilter"
+      @checked="getFilterValue"
       v-if="isModalOpen"
     />
     <Nav />
@@ -44,7 +47,6 @@ export default {
       feedArr: [],
       adsArr: [],
       data: [],
-      filter: this.$store.state.isChecked,
       options: {
         params: {
           page: 1,
@@ -100,22 +102,27 @@ export default {
     openFilter() {
       this.isModalOpen = !this.isModalOpen;
     },
-    // 필터체크로 인해 새로 저장된 값을 store에서 가져오고, 그 값을 data()에 넣어준다.
+    // 필터체크로 인해 새로 저장된 값을 store에서 가져오고, 그 값을 상태값인 category 배열에 넣어준다.
     // 그 값으로 feed 리스트들을 axios요청하게 한다.
     // 필터되어 수정된 값으로 요청해야하므로 불변성 유지 할 필요 x
-    async setFilter() {
+    // created에 걸고, filter의 저장버튼에 이벤트 걸기
+    getFilterValue() {
+      this.feedArr = [];
+      this.options.params.category = [];
       this.$store.state.isChecked.forEach((item) => {
         if (item.checked) {
           this.options.params.category.push(item.id);
         }
       });
-
-      await this.getFeeds();
+      if (this.isModalOpen) {
+        this.openFilter();
+      }
+      this.getFeeds();
     },
   },
   // 스크롤 전 리스트
   created: async function () {
-    this.setFilter();
+    this.getFilterValue();
     await this.getAdsList();
     await this.getFeeds();
   },
